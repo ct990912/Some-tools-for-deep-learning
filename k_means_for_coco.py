@@ -119,17 +119,18 @@ def load_dataset(path, types='voc'):
 
 
 if __name__ == '__main__':
-    annFile = 'tt100k2021/annotations/tt100k.json'
+    annFile = 'coco.json'
     clusters = 9
-    Inputdim = 422  # image shape
+    Inputdim = 224  # image shape
     data = load_dataset(path=annFile, types='coco')
     out = Iou_Kmeans(data, k=clusters)
 
     anchor = np.array(out) * Inputdim
-    anchor = anchor[(anchor[:,0]*anchor[:,1]).argsort()]
-    print("Boxes: {} ".format(anchor))
+    anchor = anchor[(anchor[:, 0] * anchor[:, 1]).argsort()]
+    print("Boxes:\n {} ".format(anchor))
     print("Accuracy: {:.2f}%".format(avg_iou(data, out) * 100))
 
-    final_anchors = np.around(out[:, 0] / out[:, 1], decimals=2).tolist()
+    final_anchors = np.around(out[:, 0] / out[:, 1], decimals=2)
     print("Before Sort Ratios:\n {}".format(final_anchors))
-    print("After Sort Ratios:\n {}".format(sorted(final_anchors)))
+    final_anchors.sort(0)
+    print("After Sort Ratios:\n {}".format(final_anchors))
