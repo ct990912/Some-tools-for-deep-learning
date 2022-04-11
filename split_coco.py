@@ -1,4 +1,4 @@
-mport json
+import json
 import argparse
 import funcy
 from sklearn.model_selection import train_test_split
